@@ -2,23 +2,30 @@
   "version": 2,
   "builds": [
     {
-      "src": "./frontend/package.json",
+      // Build your Vite app living in `frontend/`
+      "src": "frontend/package.json",
       "use": "@vercel/static-build",
       "config": {
-        "distDir": "dist",
-        "buildCommand": "cd frontend && npm install && npm run build"
+        // Tell it where the output actually lives
+        "distDir": "frontend/dist",
+        // Install & build only the frontend
+        "buildCommand": "npm install --prefix frontend && npm run build --prefix frontend"
       }
     },
     {
-      "src": "./backend/src/index.ts",
+      // Your Express/TypeScript endpoint
+      "src": "backend/src/index.ts",
       "use": "@vercel/node"
     }
   ],
   "routes": [
+    // Route all /api/* calls to your backend function
     { "src": "/api/(.*)", "dest": "backend/src/index.ts" },
 
+    // Serve any static file from frontend/dist here
     { "handle": "filesystem" },
 
-    { "src": "/(.*)", "dest": "frontend/dist/index.html" }
+    // And for all other requests, return the SPA index.html
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }

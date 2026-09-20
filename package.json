@@ -1,0 +1,26 @@
+{
+  "name": "sniplet-ai",
+  "version": "2.0.0",
+  "private": true,
+  "description": "A local-first, bring-your-own-key AI code generator. Streams structured multi-file projects from OpenAI, Anthropic, Google Gemini, or any OpenAI-compatible endpoint.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20.10"
+  },
+  "workspaces": [
+    "server",
+    "web"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,web -c cyan,magenta \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:server": "npm run dev --workspace server",
+    "dev:web": "npm run dev --workspace web",
+    "build": "npm run build --workspace server && npm run build --workspace web",
+    "start": "npm run start --workspace server",
+    "typecheck": "npm run typecheck --workspace server && npm run typecheck --workspace web"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.5"
+  }
+}

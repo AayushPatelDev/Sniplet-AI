@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Sniplet AI — bring your own key</title>
+    <meta
+      name="description"
+      content="A local-first AI code generator. Use your own OpenAI, Anthropic, or Gemini key to generate structured, multi-file projects."
+    />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <script>
+      // Apply the saved theme before first paint so there's no white flash.
+      try {
+        const saved = localStorage.getItem("sniplet.theme");
+        const prefersLight = window.matchMedia("(prefers-color-scheme: light)").matches;
+        const theme = saved ?? (prefersLight ? "light" : "dark");
+        document.documentElement.classList.toggle("dark", theme === "dark");
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

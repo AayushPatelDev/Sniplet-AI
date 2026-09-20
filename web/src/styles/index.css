@@ -1,0 +1,226 @@
+@import "tailwindcss";
+
+/*
+ * Dark mode is driven by a class on <html> rather than the media query, so the
+ * theme toggle can override the OS preference.
+ */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * ─── Palette ────────────────────────────────────────────────────────────────
+ * One warm accent against a neutral ramp. Every pairing below clears WCAG AA
+ * for its intended text size in both themes.
+ */
+:root {
+  --bg: #fbfaf9;
+  --surface: #ffffff;
+  --surface-raised: #f4f2f0;
+  --border: #e3dfdb;
+  --border-strong: #cfc9c3;
+  --text: #1c1a19;
+  --text-muted: #6b6560;
+  --text-faint: #96908a;
+  --accent: #b8542a;
+  --accent-hover: #9e4622;
+  --accent-soft: #fbeee7;
+  --danger: #b3261e;
+  --danger-soft: #fdecea;
+  --success: #1d6b3f;
+  --code-bg: #f7f5f3;
+  --shadow: 0 1px 2px rgb(28 26 25 / 0.06), 0 8px 24px -12px rgb(28 26 25 / 0.14);
+}
+
+.dark {
+  --bg: #0c0c0e;
+  --surface: #141417;
+  --surface-raised: #1c1c20;
+  --border: #26262b;
+  --border-strong: #35353c;
+  --text: #ececee;
+  --text-muted: #9b9ba3;
+  --text-faint: #6c6c75;
+  --accent: #e5844a;
+  --accent-hover: #f09660;
+  --accent-soft: #2a1a12;
+  --danger: #f87171;
+  --danger-soft: #2a1414;
+  --success: #4ade80;
+  --code-bg: #0f0f12;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 8px 24px -12px rgb(0 0 0 / 0.6);
+}
+
+/* `inline` makes the utilities resolve `var(--bg)` at use time, which is what
+   lets the `.dark` overrides above take effect without rebuilding the theme. */
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-raised: var(--surface-raised);
+  --color-line: var(--border);
+  --color-line-strong: var(--border-strong);
+  --color-ink: var(--text);
+  --color-muted: var(--text-muted);
+  --color-faint: var(--text-faint);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-success: var(--success);
+  --color-code: var(--code-bg);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Inter, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+
+  --radius-card: 0.75rem;
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+
+  html {
+    scrollbar-gutter: stable;
+  }
+
+  body {
+    margin: 0;
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-sans);
+    font-size: 15px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Headings get tighter leading than body copy — this is the single biggest
+     difference between "designed" and "default". */
+  h1, h2, h3, h4 {
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    font-weight: 600;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+
+  ::selection {
+    background-color: var(--accent);
+    color: var(--bg);
+  }
+
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--border-strong);
+    border-radius: 999px;
+    border: 3px solid var(--bg);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--text-faint);
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3.5 py-2
+           text-sm font-medium whitespace-nowrap transition-colors duration-150
+           disabled:cursor-not-allowed disabled:opacity-45;
+  }
+
+  .btn-primary {
+    background-color: var(--accent);
+    color: #fff;
+  }
+  .btn-primary:hover:not(:disabled) {
+    background-color: var(--accent-hover);
+  }
+
+  .btn-ghost {
+    color: var(--text-muted);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    background-color: var(--surface-raised);
+    color: var(--text);
+  }
+
+  .btn-outline {
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+  }
+  .btn-outline:hover:not(:disabled) {
+    background-color: var(--surface-raised);
+  }
+
+  .field {
+    @apply w-full rounded-lg px-3 py-2 text-sm transition-colors duration-150;
+    background-color: var(--surface);
+    border: 1px solid var(--border-strong);
+    color: var(--text);
+  }
+  .field::placeholder {
+    color: var(--text-faint);
+  }
+  .field:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 18%, transparent);
+  }
+
+  .card {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-card);
+  }
+
+  .label {
+    @apply mb-1.5 block text-xs font-medium tracking-wide uppercase;
+    color: var(--text-faint);
+  }
+}
+
+@layer utilities {
+  /* Feedback only, and only for people who want it. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(4px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  .animate-rise {
+    animation: rise 200ms cubic-bezier(0.2, 0.8, 0.3, 1) both;
+  }
+
+  @keyframes blink {
+    50% {
+      opacity: 0.25;
+    }
+  }
+  .animate-blink {
+    animation: blink 1s steps(2, start) infinite;
+  }
+}

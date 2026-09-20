@@ -1,0 +1,22 @@
+# dependencies
+node_modules/
+.npm
+
+# build output
+dist/
+*.tsbuildinfo
+
+# secrets — never commit your API keys
+.env
+.env.local
+.env.*.local
+
+# logs
+*.log
+npm-debug.log*
+
+# editors / os
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
